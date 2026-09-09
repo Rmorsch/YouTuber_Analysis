@@ -1,0 +1,32 @@
+version: 2
+
+models:
+  - name: stg_youtube__channels
+    description: One row per channel per snapshot_date.
+    columns:
+      - name: channel_id
+        tests: [not_null]
+      - name: snapshot_date
+        tests: [not_null]
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          arguments:
+            combination_of_columns: [channel_id, snapshot_date]
+
+  - name: stg_youtube__playlist_items
+    description: One row per video ever discovered in a channel's uploads playlist.
+    columns:
+      - name: video_id
+        tests: [not_null, unique]
+
+  - name: stg_youtube__videos
+    description: One row per video per snapshot_date.
+    columns:
+      - name: video_id
+        tests: [not_null]
+      - name: snapshot_date
+        tests: [not_null]
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          arguments:
+            combination_of_columns: [video_id, snapshot_date]

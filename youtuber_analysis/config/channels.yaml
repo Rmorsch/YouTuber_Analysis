@@ -1,0 +1,28 @@
+# Channel-agnostic, config-driven ingestion. Add or remove channels here --
+# no code changes needed.
+#
+# Daily snapshots are non-retroactive, so this list should be seeded wide
+# early: history only accumulates for channels that are already being
+# tracked, even though Phase 1 analysis deep-dives on just a handful of
+# them (phase: 1) before Phase 2 widens into cross-creator analysis
+# (phase: 2, tracked for history but not yet analyzed in depth).
+#
+# TODO: replace every PLACEHOLDER channel_id below with real YouTube
+# channel IDs (found under a channel's "Share channel" -> "Copy channel ID",
+# or in the page source as "externalId"). `trends_keyword` is optional --
+# omit it to skip Google Trends enrichment for that channel.
+
+channels:
+  - channel_id: "UC_PLACEHOLDER_1"
+    channel_name: "Placeholder Channel 1"
+    trends_keyword: "placeholder channel 1"
+    phase: 1
+
+  - channel_id: "UC_PLACEHOLDER_2"
+    channel_name: "Placeholder Channel 2"
+    trends_keyword: "placeholder channel 2"
+    phase: 1
+
+  - channel_id: "UC_PLACEHOLDER_3"
+    channel_name: "Placeholder Channel 3"
+    phase: 2

@@ -1,0 +1,36 @@
+version: 2
+
+models:
+  - name: dim_channels
+    description: One row per channel, latest known attributes.
+    columns:
+      - name: channel_id
+        tests: [not_null, unique]
+
+  - name: fct_channel_snapshots
+    description: >
+      Incremental fact table: one row per channel per snapshot_date, with
+      day-over-day subscriber delta. Merged on (channel_id, snapshot_date).
+    columns:
+      - name: channel_id
+        tests: [not_null]
+      - name: snapshot_date
+        tests: [not_null]
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          arguments:
+            combination_of_columns: [channel_id, snapshot_date]
+
+  - name: fct_video_snapshots
+    description: >
+      Incremental fact table: one row per video per snapshot_date. Merged
+      on (video_id, snapshot_date).
+    columns:
+      - name: video_id
+        tests: [not_null]
+      - name: snapshot_date
+        tests: [not_null]
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          arguments:
+            combination_of_columns: [video_id, snapshot_date]
