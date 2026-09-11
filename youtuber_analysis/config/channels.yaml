@@ -13,9 +13,9 @@
 # omit it to skip Google Trends enrichment for that channel.
 
 channels:
-  - channel_id: "UC_PLACEHOLDER_1"
-    channel_name: "Placeholder Channel 1"
-    trends_keyword: "placeholder channel 1"
+  - channel_id: "UCnQC_G5Xsjhp9fEJKuIcrSw"
+    channel_name: "Ben Shapiro"
+    trends_keyword: "Ben Shapiro"
     phase: 1
 
   - channel_id: "UC_PLACEHOLDER_2"
