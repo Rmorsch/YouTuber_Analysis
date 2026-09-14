@@ -50,14 +50,47 @@ history accumulates, even though analysis itself proceeds in two phases:
 - **Phase 2** -- generalize to cross-creator growth analysis once the
   dataset has enough history.
 
+## Project layout
+
+```
+youtuber_analysis/     Dagster code location
+  assets/              raw ingestion assets + dbt asset wiring
+  resources/           YouTube API, Google Trends, Snowflake IO manager
+  sensors/, jobs/      new-video sensor and ingestion job
+  config/channels.yaml channels to snapshot
+dbt/                   staging views and mart tables
+notebooks/exploration/ pre-pipeline prototypes (Social Blade, Wayback Machine)
+tests/                 unit tests
+```
+
 ## Setup
 
 ```bash
-cp .env.example .env        # fill in YouTube API key + Snowflake creds
+cp .env.example .env        # fill in YouTube API key + Snowflake values
 pip install -e ".[dev]"
 cd dbt && dbt deps && cd -
-cp dbt/profiles/profiles.yml.example ~/.dbt/profiles.yml   # fill in creds
+cp dbt/profiles/profiles.yml.example dbt/profiles/profiles.yml   # reads creds from env vars
 ```
+
+### Snowflake
+
+The pipeline authenticates as a key-pair service user.
+
+```bash
+mkdir -p ~/.snowflake/keys && cd ~/.snowflake/keys
+openssl genrsa 2048 | openssl pkcs8 -topk8 -inform PEM -out youtuber_analysis_svc.p8 -nocrypt
+openssl rsa -in youtuber_analysis_svc.p8 -pubout -out youtuber_analysis_svc.pub
+chmod 600 youtuber_analysis_svc.p8
+```
+
+1. Paste the public key body (without the BEGIN/END lines) into
+   `snowflake/setup.sql`, then run the script as ACCOUNTADMIN in a
+   Snowsight worksheet. It creates the warehouse, a monthly credit cap,
+   the `RAW`/`STAGING`/`MARTS` schemas, the pipeline role, and the
+   service user.
+2. Set `SNOWFLAKE_ACCOUNT` in `.env` to the identifier the script prints,
+   and `SNOWFLAKE_PRIVATE_KEY_PATH` to the absolute path of the `.p8` file.
+3. Check the connection: `set -a; source .env; set +a; cd dbt && dbt debug --profiles-dir profiles`
 
 Then, add real channels to `youtuber_analysis/config/channels.yaml`
 (replace the `UC_PLACEHOLDER_*` entries), and run:

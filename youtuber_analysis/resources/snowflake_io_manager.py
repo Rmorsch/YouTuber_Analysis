@@ -14,7 +14,8 @@ def build_snowflake_io_manager(schema: str = "RAW") -> SnowflakePandasIOManager:
     return SnowflakePandasIOManager(
         account=EnvVar("SNOWFLAKE_ACCOUNT"),
         user=EnvVar("SNOWFLAKE_USER"),
-        password=EnvVar("SNOWFLAKE_PASSWORD"),
+        # Key-pair auth: Snowflake service users can't log in with a password.
+        private_key_path=EnvVar("SNOWFLAKE_PRIVATE_KEY_PATH"),
         role=EnvVar("SNOWFLAKE_ROLE"),
         warehouse=EnvVar("SNOWFLAKE_WAREHOUSE"),
         database=EnvVar("SNOWFLAKE_DATABASE"),

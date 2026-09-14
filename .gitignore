@@ -1,3 +1,12 @@
+# Exploration notebooks: local credentials and scratch work
+notebooks/**/config.py
+notebooks/**/scratch_*.ipynb
+notebooks/**/*.csv
+
+# Snowflake: setup script with the public key filled in, and private keys
+snowflake/*.local.sql
+*.p8
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[codz]
